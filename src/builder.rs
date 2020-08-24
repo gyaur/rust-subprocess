@@ -409,6 +409,12 @@ mod exec {
             Ok(WriteAdapter(p))
         }
 
+        pub fn stream_stdin_popen(self) -> PopenResult<Popen> {
+            self.check_no_stdin_data("stream_stdin");
+            let p = self.stdin(Redirection::Pipe).popen()?;
+            Ok(p)
+        }
+
         fn setup_communicate(mut self) -> PopenResult<(Communicator, Popen)> {
             let stdin_data = self.stdin_data.take();
             if let (&Redirection::None, &Redirection::None) =
